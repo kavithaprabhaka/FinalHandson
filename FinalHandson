@@ -1,0 +1,74 @@
+package project;
+
+import java.awt.AWTException;
+import java.awt.Robot;
+import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
+import javax.swing.event.MenuKeyEvent;
+
+import org.openqa.selenium.By;
+import org.openqa.selenium.WebDriver;
+import org.openqa.selenium.WebElement;
+import org.openqa.selenium.chrome.ChromeDriver;
+import org.openqa.selenium.chrome.ChromeOptions;
+import org.openqa.selenium.interactions.Actions;
+import org.testng.annotations.BeforeTest;
+import org.testng.annotations.Test;
+
+import io.github.bonigarcia.wdm.WebDriverManager;
+
+public class handle {
+	WebDriver driver;
+	String url="https://the-internet.herokuapp.com/";
+	@BeforeTest
+	public void test1() throws InterruptedException {
+		
+		ChromeOptions opt= new ChromeOptions();
+		opt.addArguments("--remote-allow-origins=*");			
+		WebDriverManager.chromedriver().setup();
+		driver=new ChromeDriver(opt);
+		driver.get(url);
+		
+		driver.manage().timeouts().implicitlyWait(5,TimeUnit.SECONDS);
+	}
+	@Test
+	public void test2() throws InterruptedException {
+		
+		System.out.println(driver.getTitle());
+		WebElement Click=driver.findElement(By.linkText("About Us"));
+		WebElement Click1=driver.findElement(By.linkText("Governance"));
+		
+		Actions act=new Actions(driver);
+		
+		act.moveToElement(Click).build().perform();
+		
+		
+	}
+	@Test
+	public void tc4() throws AWTException  {
+		WebElement Click=driver.findElement(By.linkText("gmail"));
+		Actions act=new Actions(driver);
+		act.moveToElement(Click).build().perform();
+		act.contextClick().build().perform();
+		
+		Robot rc=new Robot();
+		rc.keyPress(MenuKeyEvent.VK_DOWN);
+		rc.keyPress(MenuKeyEvent.VK_ENTER);
+		
+		rc.keyPress(MenuKeyEvent.VK_CONTROL);
+		rc.keyPress(MenuKeyEvent.VK_TAB);
+		System.out.println(driver.getTitle());
+		String parent=driver.getWindowHandle();
+		System.out.println(parent);
+		Set<String>tabs=driver.getWindowHandles();
+		System.out.println(tabs);
+		for(String handles:tabs) {
+			driver.switchTo().window(handles);
+			System.out.println(driver.getTitle());
+		}
+		driver.switchTo().window(parent);
+	driver.get("https://www.jntua.ac.in");
+		
+	}
+}
